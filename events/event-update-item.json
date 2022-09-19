@@ -1,0 +1,9 @@
+{
+  "httpMethod": "PUT",
+  "path": "/",
+  "body": {
+    "id": "1",
+    "name": "Suleman",
+    "surname": "KKKKKKKKKKK"
+  }
+}

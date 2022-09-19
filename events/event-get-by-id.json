@@ -1,0 +1,7 @@
+{
+  "httpMethod": "PUT",
+  "body": {
+    "id": "1",
+    "name": "Usman"
+  }
+}
