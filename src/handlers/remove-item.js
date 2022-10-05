@@ -1,22 +1,15 @@
-const dynamodb = require('aws-sdk/clients/dynamodb');
-const docClient = new dynamodb.DocumentClient({ endpoint: 'http://dynamo-local:8000' });
-
-const tableName = process.env.SAMPLE_TABLE;
+const SampleModel = require('../models/sample');
 
 exports.removeItemHandler = async (event) => {
   if (event.httpMethod !== 'DELETE') {
     throw new Error(`putMethod only accepts PUT method, you tried: ${event.httpMethod} method.`);
   }
 
-  const { id, name } = JSON.parse(event.body);
-
-  var params = {
-    TableName: tableName,
-    Key: { id: id, name: name },
-  };
+  const { id } = JSON.parse(event.body);
 
   try {
-    await docClient.delete(params).promise();
+    await SampleModel.delete(id);
+
     return {
       statusCode: 200,
       body: { message: 'SUCCESS' },

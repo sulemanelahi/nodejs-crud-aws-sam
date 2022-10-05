@@ -1,6 +1,6 @@
 {
-  "httpMethod": "PUT",
-  "body": {
+  "httpMethod": "GET",
+  "pathParameters": {
     "id": "1",
     "name": "Usman"
   }

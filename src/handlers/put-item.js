@@ -1,7 +1,4 @@
-const dynamodb = require('aws-sdk/clients/dynamodb');
-const docClient = new dynamodb.DocumentClient({ endpoint: 'http://dynamo-local:8000' });
-
-const tableName = process.env.SAMPLE_TABLE;
+const SampleModel = require('../models/sample');
 
 exports.putItemHandler = async (event) => {
   if (event.httpMethod !== 'POST') {
@@ -10,19 +7,17 @@ exports.putItemHandler = async (event) => {
 
   const { id, name, surname } = JSON.parse(event.body);
 
-  var params = {
-    TableName: tableName,
-    Item: { id: id, name: name, surname: surname },
-  };
+  const item = { id, name, surname };
+  const mySample = new SampleModel(item);
 
   try {
-    await docClient.put(params).promise();
+    await mySample.save();
   } catch (error) {
     console.log(error);
   }
 
   return {
     statusCode: 200,
-    body: event.body,
+    body: mySample,
   };
 };

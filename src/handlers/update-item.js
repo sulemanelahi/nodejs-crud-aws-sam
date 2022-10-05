@@ -1,27 +1,15 @@
-const dynamodb = require('aws-sdk/clients/dynamodb');
-const docClient = new dynamodb.DocumentClient({ endpoint: 'http://dynamo-local:8000' });
-
-const tableName = process.env.SAMPLE_TABLE;
+const SampleModel = require('../models/sample');
 
 exports.updateItemHandler = async (event) => {
   if (event.httpMethod !== 'PUT') {
     throw new Error(`putMethod only accepts PUT method, you tried: ${event.httpMethod} method.`);
   }
 
-  const { id, name, surname } = JSON.parse(event.body);
-
-  var params = {
-    TableName: tableName,
-    Key: { id: id, name: name },
-    UpdateExpression: 'set #surname = :surname',
-    ExpressionAttributeNames: { '#surname': 'surname' },
-    ExpressionAttributeValues: {
-      ':surname': surname,
-    },
-  };
+  const { id, name, surname } = event.body;
 
   try {
-    await docClient.update(params).promise();
+    await SampleModel.update({ id, name, surname });
+
     return {
       statusCode: 200,
       body: { message: 'SUCCESS' },
